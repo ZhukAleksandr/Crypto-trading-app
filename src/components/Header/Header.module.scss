@@ -1,0 +1,90 @@
+$primary-color: #3498db;
+$secondary-color: #2980b9;
+$text-color: #ffffff;
+
+$font-size-large: 24px;
+$font-size-medium: 22px;
+$font-size-small: 20px;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 60px;
+  height: 80px;
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: $text-color;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.link {
+  color: $text-color;
+  text-decoration: none;
+  font-size: $font-size-large;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ecf0f1;
+  }
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+}
+
+.loginButton {
+  background-color: $primary-color;
+  color: $text-color;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: $font-size-medium;
+  font-weight: 600;
+  border-radius: 25px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: $secondary-color;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 15px 30px;
+  }
+
+  .nav {
+    gap: 15px;
+  }
+
+  .link {
+    font-size: $font-size-medium;
+  }
+
+  .loginButton {
+    font-size: $font-size-small;
+    padding: 8px 18px;
+  }
+}
