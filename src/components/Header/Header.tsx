@@ -1,22 +1,15 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import useStore from "../../store";
 import styles from "./Header.module.scss";
-
-interface HeaderProps {
-  openAuthModal: () => void;
-}
+import { HeaderProps } from "../../interfaces/HeaderProps";
 
 const Header: React.FC<HeaderProps> = ({ openAuthModal }) => {
   const { isLogged, logout } = useStore();
   const navigate = useNavigate();
 
   const handleTradeClick = () => {
-    if (isLogged) {
-      navigate("/trade");
-    } else {
-      openAuthModal();
-    }
+    isLogged ? navigate("/trade") : openAuthModal();
   };
 
   const handleLogout = () => {
@@ -27,13 +20,31 @@ const Header: React.FC<HeaderProps> = ({ openAuthModal }) => {
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
-        <a onClick={() => navigate("/")} className={styles.link}>
+        <NavLink
+          to="/"
+          end
+          className={({ isActive }) =>
+            isActive ? `${styles.link} ${styles.activeLink}` : styles.link
+          }
+        >
           Home
-        </a>
-        <a onClick={handleTradeClick} className={styles.link}>
-          Trade
-        </a>
+        </NavLink>
+        {isLogged ? (
+          <NavLink
+            to="/trade"
+            className={({ isActive }) =>
+              isActive ? `${styles.link} ${styles.activeLink}` : styles.link
+            }
+          >
+            Trade
+          </NavLink>
+        ) : (
+          <button className={styles.link} onClick={handleTradeClick}>
+            Trade
+          </button>
+        )}
       </nav>
+
       <div className={styles.userInfo}>
         {isLogged ? (
           <button className={styles.logoutButton} onClick={handleLogout}>

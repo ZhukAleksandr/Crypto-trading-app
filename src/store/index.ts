@@ -6,4 +6,6 @@ const useStore = create<AuthState>((set, get, store) => ({
   ...createAuthSlice(set, get, store),
 }));
 
+useStore.getState().checkAuth();
+
 export default useStore;

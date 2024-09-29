@@ -7,4 +7,5 @@ export interface AuthState {
   setPassword: (password: string) => void;
   login: (user: { id: string; name: string; email: string }) => void;
   logout: () => void;
+  checkAuth: () => void;
 }

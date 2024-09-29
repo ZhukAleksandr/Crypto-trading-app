@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useStore from "../../store";
 import styles from "./AuthModal.module.scss";
-
-interface AuthModalProps {
-  closeModal: () => void;
-}
+import { AuthModalProps } from "../../interfaces/AuthModalProps";
 
 const AuthModal: React.FC<AuthModalProps> = ({ closeModal }) => {
   const { isLogged, login, setEmail, setPassword } = useStore();

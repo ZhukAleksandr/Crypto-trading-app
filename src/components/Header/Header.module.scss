@@ -1,8 +1,9 @@
-$primary-color: #3498db;
-$secondary-color: #2980b9;
-$logout-primary-color: #e74c3c;
-$logout-secondary-color: #c0392b;
-$text-color: #ffffff;
+$primary-color: #ffafbd;
+$secondary-color: #ffc3a0;
+$logout-primary-color: #ff6b6b;
+$logout-secondary-color: #ff3f3f;
+$text-color: #333333;
+$active-color: #ff7e67;
 
 $font-size-large: 24px;
 $font-size-medium: 22px;
@@ -14,7 +15,7 @@ $font-size-small: 20px;
   align-items: center;
   padding: 0 60px;
   height: 80px;
-  background: linear-gradient(135deg, #2c3e50, #34495e);
+  background: linear-gradient(135deg, #fffcdc, #ffafbd);
   color: $text-color;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -30,67 +31,88 @@ $font-size-small: 20px;
 .link {
   color: $text-color;
   text-decoration: none;
-  font-size: $font-size-large;
+  font-size: 18px;
   font-weight: 600;
   padding: 8px 16px;
-  border-radius: 6px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+  transition: color 0.3s ease, background-color 0.3s ease, text-shadow 0.3s ease;
 
   &:hover {
+    color: darken($text-color, 10%);
     background-color: rgba(255, 255, 255, 0.2);
-    color: #ecf0f1;
+    border-radius: 6px;
   }
 
   &:active {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 8px 2px lighten($primary-color, 30%);
+  }
+}
+
+.activeLink {
+  color: $active-color;
+  font-weight: bold;
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: rgba(255, 126, 103, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background-color: rgba(255, 126, 103, 0.5);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 8px 2px $active-color;
+  }
+}
+
+.button {
+  color: $text-color;
+  border: none;
+  padding: 12px 25px;
+  cursor: pointer;
+  font-size: $font-size-medium;
+  font-weight: 600;
+  border-radius: 25px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 8px 2px lighten($primary-color, 30%);
+  }
+}
+
+.loginButton {
+  @extend .button;
+  background-color: $primary-color;
+
+  &:hover {
+    background-color: $secondary-color;
+  }
+}
+
+.logoutButton {
+  @extend .button;
+  background-color: $logout-primary-color;
+
+  &:hover {
+    background-color: $logout-secondary-color;
   }
 }
 
 .userInfo {
   display: flex;
   align-items: center;
-}
-
-.loginButton {
-  background-color: $primary-color;
-  color: $text-color;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: $font-size-medium;
-  font-weight: 600;
-  border-radius: 25px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-
-  &:hover {
-    background-color: $secondary-color;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-}
-
-.logoutButton {
-  background-color: $logout-primary-color;
-  color: $text-color;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: $font-size-medium;
-  font-weight: 600;
-  border-radius: 25px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-
-  &:hover {
-    background-color: $logout-secondary-color;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
 }
 
 @media (max-width: 768px) {

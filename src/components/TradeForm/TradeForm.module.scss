@@ -1,0 +1,108 @@
+$primary-color: #5dade2;
+$secondary-color: #2980b9;
+$input-bg-color: #f2f3f4;
+$text-color: #2c3e50;
+$button-color: #4caf50;
+$button-hover-color: #45a049;
+
+.tradeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+  background-color: $input-bg-color;
+  border-radius: 12px;
+  box-shadow: 8px 8px 29px #b0b0b0, -8px -8px 29px #ffffff;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.title {
+  font-size: 2rem;
+  color: $text-color;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.input {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  border: 2px solid $primary-color;
+  background-color: $input-bg-color;
+  outline: none;
+  transition: border-color 0.3s ease;
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &:focus {
+    border-color: $secondary-color;
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.select {
+  margin-left: 1rem;
+  padding: 1rem 2rem 1rem 1rem;
+  font-size: 1.5rem;
+  background-color: $input-bg-color;
+  color: $text-color;
+  border-radius: 8px;
+  border: 2px solid $primary-color;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: $secondary-color;
+  }
+}
+
+.swapButton {
+  background-color: $button-color;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: $button-hover-color;
+    transform: rotate(180deg);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.currency {
+  position: absolute;
+  right: 10px;
+  font-size: 1.5rem;
+  color: $text-color;
+  font-weight: bold;
+}
