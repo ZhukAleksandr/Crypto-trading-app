@@ -1,5 +1,7 @@
 $primary-color: #3498db;
 $secondary-color: #2980b9;
+$logout-primary-color: #e74c3c;
+$logout-secondary-color: #c0392b;
 $text-color: #ffffff;
 
 $font-size-large: 24px;
@@ -70,6 +72,27 @@ $font-size-small: 20px;
   }
 }
 
+.logoutButton {
+  background-color: $logout-primary-color;
+  color: $text-color;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: $font-size-medium;
+  font-weight: 600;
+  border-radius: 25px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: $logout-secondary-color;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 768px) {
   .header {
     padding: 15px 30px;
@@ -83,7 +106,8 @@ $font-size-small: 20px;
     font-size: $font-size-medium;
   }
 
-  .loginButton {
+  .loginButton,
+  .logoutButton {
     font-size: $font-size-small;
     padding: 8px 18px;
   }

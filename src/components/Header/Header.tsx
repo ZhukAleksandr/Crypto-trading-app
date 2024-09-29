@@ -1,33 +1,51 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import useStore from "../../store";
 import styles from "./Header.module.scss";
-import AuthModal from "../AuthModal/AuthModal";
 
-const Header = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+interface HeaderProps {
+  openAuthModal: () => void;
+}
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+const Header: React.FC<HeaderProps> = ({ openAuthModal }) => {
+  const { isLogged, logout } = useStore();
+  const navigate = useNavigate();
+
+  const handleTradeClick = () => {
+    if (isLogged) {
+      navigate("/trade");
+    } else {
+      openAuthModal();
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
-    <>
-      <header className={styles.header}>
-        <nav className={styles.nav}>
-          <Link to="/" className={styles.link}>
-            Home
-          </Link>
-          <Link to="/trade" className={styles.link}>
-            Trade
-          </Link>
-        </nav>
-        <div className={styles.userInfo}>
-          <button className={styles.loginButton} onClick={openModal}>
+    <header className={styles.header}>
+      <nav className={styles.nav}>
+        <a onClick={() => navigate("/")} className={styles.link}>
+          Home
+        </a>
+        <a onClick={handleTradeClick} className={styles.link}>
+          Trade
+        </a>
+      </nav>
+      <div className={styles.userInfo}>
+        {isLogged ? (
+          <button className={styles.logoutButton} onClick={handleLogout}>
+            Logout
+          </button>
+        ) : (
+          <button className={styles.loginButton} onClick={handleTradeClick}>
             Login
           </button>
-        </div>
-      </header>
-      {isModalOpen && <AuthModal closeModal={closeModal} />}
-    </>
+        )}
+      </div>
+    </header>
   );
 };
 
