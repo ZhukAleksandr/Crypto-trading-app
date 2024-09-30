@@ -5,7 +5,14 @@ import styles from "./AuthModal.module.scss";
 import { AuthModalProps } from "../../interfaces/AuthModalProps";
 
 const AuthModal: React.FC<AuthModalProps> = ({ closeModal }) => {
-  const { isLogged, login, setEmail, setPassword } = useStore();
+  const {
+    isLogged,
+    login,
+    setEmail,
+    setPassword,
+    redirectPath,
+    setRedirectPath,
+  } = useStore();
   const navigate = useNavigate();
 
   const [emailInput, setEmailInput] = useState("");
@@ -16,29 +23,24 @@ const AuthModal: React.FC<AuthModalProps> = ({ closeModal }) => {
   useEffect(() => {
     if (isLogged) {
       closeModal();
-      navigate("/trade");
+      if (redirectPath) {
+        navigate(redirectPath);
+        setRedirectPath(null);
+      }
     }
-  }, [isLogged, navigate, closeModal]);
+  }, [isLogged, navigate, closeModal, redirectPath, setRedirectPath]);
 
   const validateInputs = () => {
-    let valid = true;
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailInput)) {
-      setEmailError("Please enter a valid email.");
-      valid = false;
-    } else {
-      setEmailError("");
-    }
+    const isEmailValid = emailRegex.test(emailInput);
+    setEmailError(isEmailValid ? "" : "Please enter a valid email.");
 
-    if (passwordInput.length < 8) {
-      setPasswordError("Password must be at least 8 characters long.");
-      valid = false;
-    } else {
-      setPasswordError("");
-    }
+    const isPasswordValid = passwordInput.length >= 8;
+    setPasswordError(
+      isPasswordValid ? "" : "Password must be at least 8 characters long."
+    );
 
-    return valid;
+    return isEmailValid && isPasswordValid;
   };
 
   const handleSubmit = (e: React.FormEvent) => {

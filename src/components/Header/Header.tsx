@@ -5,16 +5,26 @@ import styles from "./Header.module.scss";
 import { HeaderProps } from "../../interfaces/HeaderProps";
 
 const Header: React.FC<HeaderProps> = ({ openAuthModal }) => {
-  const { isLogged, logout } = useStore();
+  const { isLogged, user, logout } = useStore();
   const navigate = useNavigate();
 
   const handleTradeClick = () => {
-    isLogged ? navigate("/trade") : openAuthModal();
+    if (isLogged) {
+      navigate("/trade");
+    } else {
+      useStore.setState({ redirectPath: "/trade" });
+      openAuthModal();
+    }
   };
 
   const handleLogout = () => {
     logout();
     navigate("/");
+  };
+
+  const getEmailUsername = (email: string) => {
+    console.log("Username: ", email);
+    return email.split("@")[0];
   };
 
   return (
@@ -46,6 +56,12 @@ const Header: React.FC<HeaderProps> = ({ openAuthModal }) => {
       </nav>
 
       <div className={styles.userInfo}>
+        {isLogged && user?.email && (
+          <span className={styles.userEmail}>
+            {getEmailUsername(user.email)}
+          </span>
+        )}
+
         {isLogged ? (
           <button className={styles.logoutButton} onClick={handleLogout}>
             Logout

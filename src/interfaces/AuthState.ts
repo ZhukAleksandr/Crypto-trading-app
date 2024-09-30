@@ -8,4 +8,6 @@ export interface AuthState {
   login: (user: { id: string; name: string; email: string }) => void;
   logout: () => void;
   checkAuth: () => void;
+  redirectPath: string | null;
+  setRedirectPath: (path: string | null) => void;
 }

@@ -1,11 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getCryptoAssets } from "../../services/api";
 import styles from "./TradeForm.module.scss";
-
-const assets = [
-  { symbol: "BTC", name: "Bitcoin", price: 55000 },
-  { symbol: "ETH", name: "Ethereum", price: 3500 },
-  { symbol: "XRP", name: "Ripple", price: 1.05 },
-];
+import { CryptoAsset } from "../../interfaces/CryptoAsset";
 
 const convertCryptoToFiat = (cryptoAmount: number, price: number) =>
   (cryptoAmount * price).toFixed(2);
@@ -14,20 +11,34 @@ const convertFiatToCrypto = (fiatAmount: number, price: number) =>
   (fiatAmount / price).toFixed(6);
 
 const TradeForm: React.FC = () => {
-  const [inputAmount, setInputAmount] = useState<string>("");
-  const [outputAmount, setOutputAmount] = useState<string>("");
-  const [selectedAsset, setSelectedAsset] = useState<string>("BTC");
+  const [inputAmount, setInputAmount] = useState<string>("0");
+  const [outputAmount, setOutputAmount] = useState<string>("0");
+  const [selectedAsset, setSelectedAsset] = useState<string>("");
   const [isCryptoToFiat, setIsCryptoToFiat] = useState<boolean>(true);
 
-  const selectedAssetData = assets.find(
+  const {
+    data: assets,
+    isLoading,
+    error,
+  } = useQuery<CryptoAsset[]>({
+    queryKey: ["cryptoAssets"],
+    queryFn: getCryptoAssets,
+  });
+
+  useEffect(() => {
+    if (assets && assets.length > 0 && !selectedAsset) {
+      setSelectedAsset(assets[0].symbol);
+    }
+  }, [assets, selectedAsset]);
+
+  const selectedAssetData = assets?.find(
     (asset) => asset.symbol === selectedAsset
   );
 
   useEffect(() => {
-    if (!inputAmount || !selectedAssetData) return;
+    if (!selectedAssetData) return;
 
-    const inputValue = parseFloat(inputAmount);
-
+    const inputValue = parseFloat(inputAmount) || 0;
     const result = isCryptoToFiat
       ? convertCryptoToFiat(inputValue, selectedAssetData.price)
       : convertFiatToCrypto(inputValue, selectedAssetData.price);
@@ -36,7 +47,13 @@ const TradeForm: React.FC = () => {
   }, [inputAmount, isCryptoToFiat, selectedAssetData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputAmount(e.target.value);
+    let value = e.target.value;
+
+    if (value.startsWith("0") && !value.startsWith("0.")) {
+      value = value.slice(1);
+    }
+
+    setInputAmount(value);
   };
 
   const handleAssetChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -44,8 +61,11 @@ const TradeForm: React.FC = () => {
   };
 
   const handleSwap = useCallback(() => {
-    setIsCryptoToFiat((prev) => !prev);
-  }, []);
+    setIsCryptoToFiat(!isCryptoToFiat);
+  }, [isCryptoToFiat]);
+
+  if (isLoading) return <div>Loading assets...</div>;
+  if (error) return <div>Error loading assets: {`${error}`}</div>;
 
   return (
     <div className={styles.tradeContainer}>
@@ -60,14 +80,15 @@ const TradeForm: React.FC = () => {
                 onChange={handleInputChange}
                 className={styles.input}
                 placeholder="0"
+                min="0"
               />
               <select
                 value={selectedAsset}
                 onChange={handleAssetChange}
                 className={styles.select}
               >
-                {assets.map((asset) => (
-                  <option key={asset.symbol} value={asset.symbol}>
+                {(assets ?? []).map((asset) => (
+                  <option key={asset.id} value={asset.symbol}>
                     {asset.symbol}
                   </option>
                 ))}
@@ -102,6 +123,7 @@ const TradeForm: React.FC = () => {
                 onChange={handleInputChange}
                 className={styles.input}
                 placeholder="$ 0"
+                min="0"
               />
               <span className={styles.currency}>USD</span>
             </div>
@@ -126,8 +148,8 @@ const TradeForm: React.FC = () => {
                 onChange={handleAssetChange}
                 className={styles.select}
               >
-                {assets.map((asset) => (
-                  <option key={asset.symbol} value={asset.symbol}>
+                {(assets ?? []).map((asset) => (
+                  <option key={asset.id} value={asset.symbol}>
                     {asset.symbol}
                   </option>
                 ))}

@@ -2,18 +2,21 @@ import { StateCreator } from "zustand";
 import { AuthState } from "../interfaces/AuthState";
 
 const generateFakeJWT = () => {
-  return "fake-jwt-token-" + Math.random().toString(36).substr(2);
+  return "fake-jwt-token-" + Math.random().toString(36).substring(2);
 };
 
 const createAuthSlice: StateCreator<AuthState> = (set, get) => ({
-  isLogged: false,
+  isLogged: !!localStorage.getItem("authToken"),
   user: null,
   email: "",
   password: "",
+  redirectPath: null,
 
   setEmail: (email: string) => set({ email }),
 
   setPassword: (password: string) => set({ password }),
+
+  setRedirectPath: (path: string | null) => set({ redirectPath: path }),
 
   login: (user) => {
     const token = generateFakeJWT();
@@ -28,6 +31,7 @@ const createAuthSlice: StateCreator<AuthState> = (set, get) => ({
       user: null,
       email: "",
       password: "",
+      redirectPath: null, 
     });
   },
 

@@ -49,7 +49,6 @@ $font-size-small: 20px;
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 8px 2px lighten($primary-color, 30%);
   }
 }
 
@@ -88,7 +87,6 @@ $font-size-small: 20px;
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 8px 2px lighten($primary-color, 30%);
   }
 }
 
@@ -113,6 +111,17 @@ $font-size-small: 20px;
 .userInfo {
   display: flex;
   align-items: center;
+  gap: 15px;
+}
+
+.userEmail {
+  font-size: $font-size-medium;
+  font-weight: 500;
+  color: $text-color;
+  padding: 4px 8px;
+  background-color: transparent;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
 }
 
 @media (max-width: 768px) {
@@ -132,5 +141,9 @@ $font-size-small: 20px;
   .logoutButton {
     font-size: $font-size-small;
     padding: 8px 18px;
+  }
+
+  .userEmail {
+    font-size: 14px;
   }
 }
