@@ -2,7 +2,7 @@ $primary-color: #ffafbd;
 $secondary-color: #ffc3a0;
 $logout-primary-color: #ff6b6b;
 $logout-secondary-color: #ff3f3f;
-$text-color: #333333;
+$text-color: #575353;
 $active-color: #ff7e67;
 
 $font-size-large: 24px;
@@ -29,6 +29,8 @@ $font-size-small: 20px;
 }
 
 .link {
+  background-color: transparent;
+  border: none;
   color: $text-color;
   text-decoration: none;
   font-size: 18px;
@@ -38,7 +40,6 @@ $font-size-small: 20px;
   transition: color 0.3s ease, background-color 0.3s ease, text-shadow 0.3s ease;
 
   &:hover {
-    color: darken($text-color, 10%);
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 6px;
   }
@@ -74,11 +75,11 @@ $font-size-small: 20px;
 .button {
   color: $text-color;
   border: none;
-  padding: 12px 25px;
+  padding: 8px 16px;
   cursor: pointer;
-  font-size: $font-size-medium;
+  font-size: 18px;
   font-weight: 600;
-  border-radius: 25px;
+  border-radius: 6px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {

@@ -8,6 +8,7 @@ import { CryptoAsset } from "../../interfaces/CryptoAsset";
 import { SortDirection, Params } from "../../interfaces/CryptoTableInterfaces";
 import SortableHeader from "../SortableHeader/SortableHeader";
 import CryptoRow from "../CryptoRow/CryptoRow";
+import { ActionType } from "../../interfaces/UIState";
 
 const CryptoTable: React.FC = () => {
   const itemsToShow = useStore((state) => state.itemsToShow);
@@ -64,7 +65,7 @@ const CryptoTable: React.FC = () => {
   };
 
   const handleActionChange = (e: React.ChangeEvent<HTMLSelectElement>, id: string) => {
-    setActionType(id, e.target.value as "buy" | "sell");
+    setActionType(id, e.target.value as ActionType);
   };
 
   if (isLoading) return <div>Loading data...</div>;
