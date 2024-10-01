@@ -20,16 +20,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ closeModal }) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  useEffect(() => {
-    if (isLogged) {
-      closeModal();
-      if (redirectPath) {
-        navigate(redirectPath);
-        setRedirectPath(null);
-      }
-    }
-  }, [isLogged, navigate, closeModal, redirectPath, setRedirectPath]);
-
   const validateInputs = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isEmailValid = emailRegex.test(emailInput);
@@ -56,6 +46,16 @@ const AuthModal: React.FC<AuthModalProps> = ({ closeModal }) => {
     const fakeUser = { id: "1", name: "Admin", email: emailInput };
     login(fakeUser);
   };
+
+  useEffect(() => {
+    if (isLogged) {
+      closeModal();
+      if (redirectPath) {
+        navigate(redirectPath);
+        setRedirectPath(null);
+      }
+    }
+  }, [isLogged, navigate, closeModal, redirectPath, setRedirectPath]);
 
   return (
     <div className={styles.overlay}>

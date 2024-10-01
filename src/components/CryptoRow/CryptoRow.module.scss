@@ -1,0 +1,78 @@
+$primary-color: #3498db;
+$hover-color: #2980b9;
+$buy-color: #4caf50;
+$sell-color: #e74c3c;
+$font-size: 16px;
+$padding: 8px;
+
+@mixin button-styles($background-color, $hover-background, $color: white) {
+  background-color: $background-color;
+  color: $color;
+  border: none;
+  border-radius: 6px;
+  padding: $padding;
+  cursor: pointer;
+  font-size: $font-size;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: $hover-background;
+    transform: scale(1.05);
+  }
+}
+
+.gridCell {
+  display: flex;
+  align-items: center;
+  padding: $padding 15px;
+  border-bottom: 1px solid #eaeaea;
+  font-size: 16px;
+  background-color: #ffffff;
+  min-height: 40px;
+  transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+
+  &:nth-child(3n) {
+    justify-content: center;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.actionSelect {
+  padding: $padding;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: #f0f0f0;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &.buySelect {
+    @include button-styles(#e8f5e9, #c8e6c9, $buy-color);
+  }
+
+  &.sellSelect {
+    @include button-styles(#fdecea, #f8d7da, $sell-color);
+  }
+}

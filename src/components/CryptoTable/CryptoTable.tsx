@@ -1,73 +1,74 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { getCryptoAssets } from "../../services/api";
 import useStore from "../../store";
 import styles from "./CryptoTable.module.scss";
 import { CryptoAsset } from "../../interfaces/CryptoAsset";
+import { SortDirection, Params } from "../../interfaces/CryptoTableInterfaces";
 import SortableHeader from "../SortableHeader/SortableHeader";
+import CryptoRow from "../CryptoRow/CryptoRow";
 
 const CryptoTable: React.FC = () => {
   const itemsToShow = useStore((state) => state.itemsToShow);
   const setItemsToShow = useStore((state) => state.setItemsToShow);
   const actionTypes = useStore((state) => state.actionTypes);
   const setActionType = useStore((state) => state.setActionType);
-
-  const [sortConfig, setSortConfig] = useState<{
-    key: keyof CryptoAsset;
-    direction: "asc" | "desc";
-  } | null>(null);
-
   const [searchParams, setSearchParams] = useSearchParams();
-  const isSorted = searchParams.get("isSorted") === "true";
+
+  const [sortConfig, setSortConfig] = useState<Params>({
+    key: (searchParams.get("sortKey") as keyof CryptoAsset) || undefined,
+    direction: (searchParams.get("sortDirection") as SortDirection) || undefined,
+  });
 
   const { data, error, isLoading } = useQuery<CryptoAsset[]>({
     queryKey: ["cryptoAssets"],
-    queryFn: getCryptoAssets,
+    queryFn: () => getCryptoAssets({ 
+      vs_currency: "usd", 
+      order: "market_cap_desc", 
+      per_page: 100, 
+      page: 1, 
+      sparkline: false 
+    }),
   });
 
-  useEffect(() => {
-    // Если isSorted равен false, мы не применяем сортировку
-    if (!isSorted) {
-      setSortConfig(null);
-    }
-  }, [isSorted]);
+  const sortedData = useMemo(() => {
+    if (!data || !sortConfig.key) return data ?? [];
 
-  if (isLoading) return <div>Loading data...</div>;
-  if (error) return <div>Error loading data: {`${error}`}</div>;
-
-  const sortedData = [...(data ?? [])].sort((a, b) => {
-    if (!sortConfig) return 0;
-    const order = sortConfig.direction === "asc" ? 1 : -1;
+    const order = sortConfig.direction === SortDirection.ASC ? 1 : -1;
     const key = sortConfig.key;
 
-    if (a[key] < b[key]) return -1 * order;
-    if (a[key] > b[key]) return 1 * order;
-    return 0;
-  });
+    return [...data].sort((a, b) => {
+      if (a[key] < b[key]) return -1 * order;
+      if (a[key] > b[key]) return 1 * order;
+      return 0;
+    });
+  }, [data, sortConfig]);
 
   const requestSort = (key: keyof CryptoAsset) => {
-    let direction: "asc" | "desc" = "asc";
+    let direction: SortDirection = SortDirection.ASC;
 
-    if (sortConfig?.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
+    if (sortConfig?.key === key && sortConfig.direction === SortDirection.ASC) {
+      direction = SortDirection.DESC;
     }
 
     setSortConfig({ key, direction });
 
-    setSearchParams({ isSorted: "true" });
+    searchParams.set("sortKey", key);
+    searchParams.set("sortDirection", direction);
+    setSearchParams(searchParams);
   };
 
   const loadMore = () => {
     setItemsToShow(itemsToShow + 10);
   };
 
-  const handleActionChange = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    id: string
-  ) => {
+  const handleActionChange = (e: React.ChangeEvent<HTMLSelectElement>, id: string) => {
     setActionType(id, e.target.value as "buy" | "sell");
   };
+
+  if (isLoading) return <div>Loading data...</div>;
+  if (error) return <div>Error loading data: {`${error}`}</div>;
 
   return (
     <div className={styles.tableContainer}>
@@ -91,35 +92,14 @@ const CryptoTable: React.FC = () => {
           const sellPrice = buyPrice * 0.95;
 
           return (
-            <React.Fragment key={crypto.id}>
-              <div className={styles.gridCell}>
-                <img
-                  src={crypto.icon}
-                  alt={`${crypto.name} icon`}
-                  className={styles.icon}
-                />
-                {crypto.name}
-              </div>
-              <div className={styles.gridCell}>
-                {actionTypes[crypto.id] === "sell"
-                  ? `$${sellPrice.toFixed(2)}`
-                  : `$${buyPrice.toFixed(2)}`}
-              </div>
-              <div className={styles.gridCell}>
-                <select
-                  value={actionTypes[crypto.id] || "buy"}
-                  onChange={(e) => handleActionChange(e, crypto.id)}
-                  className={`${styles.actionSelect} ${
-                    actionTypes[crypto.id] === "sell"
-                      ? styles.sellSelect
-                      : styles.buySelect
-                  }`}
-                >
-                  <option value="buy">Buy</option>
-                  <option value="sell">Sell</option>
-                </select>
-              </div>
-            </React.Fragment>
+            <CryptoRow
+              key={crypto.id}
+              crypto={crypto}
+              buyPrice={buyPrice}
+              sellPrice={sellPrice}
+              actionType={actionTypes[crypto.id]}
+              onActionChange={handleActionChange}
+            />
           );
         })}
       </div>

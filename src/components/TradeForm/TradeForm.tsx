@@ -22,29 +22,19 @@ const TradeForm: React.FC = () => {
     error,
   } = useQuery<CryptoAsset[]>({
     queryKey: ["cryptoAssets"],
-    queryFn: getCryptoAssets,
+    queryFn: () =>
+      getCryptoAssets({
+        vs_currency: "usd",
+        order: "market_cap_desc",
+        per_page: 100,
+        page: 1,
+        sparkline: false,
+      }),
   });
-
-  useEffect(() => {
-    if (assets && assets.length > 0 && !selectedAsset) {
-      setSelectedAsset(assets[0].symbol);
-    }
-  }, [assets, selectedAsset]);
 
   const selectedAssetData = assets?.find(
     (asset) => asset.symbol === selectedAsset
   );
-
-  useEffect(() => {
-    if (!selectedAssetData) return;
-
-    const inputValue = parseFloat(inputAmount) || 0;
-    const result = isCryptoToFiat
-      ? convertCryptoToFiat(inputValue, selectedAssetData.price)
-      : convertFiatToCrypto(inputValue, selectedAssetData.price);
-
-    setOutputAmount(result);
-  }, [inputAmount, isCryptoToFiat, selectedAssetData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -63,6 +53,23 @@ const TradeForm: React.FC = () => {
   const handleSwap = useCallback(() => {
     setIsCryptoToFiat(!isCryptoToFiat);
   }, [isCryptoToFiat]);
+
+  useEffect(() => {
+    if (assets && assets.length > 0 && !selectedAsset) {
+      setSelectedAsset(assets[0].symbol);
+    }
+  }, [assets, selectedAsset]);
+  
+  useEffect(() => {
+    if (!selectedAssetData) return;
+
+    const inputValue = parseFloat(inputAmount) || 0;
+    const result = isCryptoToFiat
+      ? convertCryptoToFiat(inputValue, selectedAssetData.price)
+      : convertFiatToCrypto(inputValue, selectedAssetData.price);
+
+    setOutputAmount(result);
+  }, [inputAmount, isCryptoToFiat, selectedAssetData]);
 
   if (isLoading) return <div>Loading assets...</div>;
   if (error) return <div>Error loading assets: {`${error}`}</div>;

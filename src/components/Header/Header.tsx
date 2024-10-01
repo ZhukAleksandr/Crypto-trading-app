@@ -17,13 +17,16 @@ const Header: React.FC<HeaderProps> = ({ openAuthModal }) => {
     }
   };
 
+  const handleLoginClick = () => {
+    openAuthModal();
+  }
+
   const handleLogout = () => {
     logout();
     navigate("/");
   };
 
   const getEmailUsername = (email: string) => {
-    console.log("Username: ", email);
     return email.split("@")[0];
   };
 
@@ -67,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ openAuthModal }) => {
             Logout
           </button>
         ) : (
-          <button className={styles.loginButton} onClick={handleTradeClick}>
+          <button className={styles.loginButton} onClick={handleLoginClick}>
             Login
           </button>
         )}
