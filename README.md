@@ -39,7 +39,7 @@ Make sure you have the following installed on your machine:
    VITE_API_URL=your_api_url_here
    
 6. Run the development server (powered by Vite):   
-   ```bash
+   
    npm run dev
    
    This will start the Vite development server and open the project in your default browser.
@@ -47,7 +47,7 @@ Make sure you have the following installed on your machine:
   ### Building for Production
   To create an optimized production build using Vite, run:
   
-    ```bash
+    
     npm run build
     
   The production files will be located in the dist/ directory.
