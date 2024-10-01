@@ -31,23 +31,23 @@ Make sure you have the following installed on your machine:
    
    npm install
    
-4. Create a .env file:
+3. Create a .env file:
 
    You need to create a .env file in the root directory of the project based on the contents of the provided .env.example file.
    You can find the .env.example file [env](https://github.com/ZhukAleksandr/Crypto-trading-app/blob/main/.env.example).
    For example:   
    VITE_API_URL=your_api_url_here
    
-6. Run the development server (powered by Vite):   
+4. Run the development server (powered by Vite):   
    
+   ```bash
    npm run dev
    
    This will start the Vite development server and open the project in your default browser.
 
   ### Building for Production
   To create an optimized production build using Vite, run:
-  
-    
+      
     npm run build
     
   The production files will be located in the dist/ directory.
