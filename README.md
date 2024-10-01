@@ -28,14 +28,17 @@ Make sure you have the following installed on your machine:
    cd crypto-trading-app
    
 2. Install dependencies:
-   ```bash
+   
    npm install
    
 4. Create a .env file:
-   You need to create a .env file in the root directory of the project based on the contents of the provided .env.example file. You can find the .env.example file here. For example:   
+
+   You need to create a .env file in the root directory of the project based on the contents of the provided .env.example file.
+   You can find the .env.example file [env](https://github.com/ZhukAleksandr/Crypto-trading-app/blob/main/.env.example).
+   For example:   
    VITE_API_URL=your_api_url_here
    
-5. Run the development server (powered by Vite):   
+6. Run the development server (powered by Vite):   
    ```bash
    npm run dev
    
@@ -43,8 +46,10 @@ Make sure you have the following installed on your machine:
 
   ### Building for Production
   To create an optimized production build using Vite, run:
+  
     ```bash
     npm run build
+    
   The production files will be located in the dist/ directory.
 
   ### Deploying to GitHub Pages
