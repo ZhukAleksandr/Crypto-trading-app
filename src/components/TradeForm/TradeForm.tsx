@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getCryptoAssets } from "../../services/api";
 import styles from "./TradeForm.module.scss";
 import { CryptoAsset } from "../../interfaces/CryptoAsset";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 const convertCryptoToFiat = (cryptoAmount: number, price: number) =>
   (cryptoAmount * price).toFixed(2);
@@ -20,6 +22,7 @@ const TradeForm: React.FC = () => {
     data: assets,
     isLoading,
     error,
+    refetch,
   } = useQuery<CryptoAsset[]>({
     queryKey: ["cryptoAssets"],
     queryFn: () =>
@@ -71,8 +74,8 @@ const TradeForm: React.FC = () => {
     setOutputAmount(result);
   }, [inputAmount, isCryptoToFiat, selectedAssetData]);
 
-  if (isLoading) return <div>Loading assets...</div>;
-  if (error) return <div>Error loading assets: {`${error}`}</div>;
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage onRetry={refetch} />; 
 
   return (
     <div className={styles.tradeContainer}>

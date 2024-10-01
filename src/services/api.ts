@@ -32,6 +32,5 @@ export const getCryptoAssets = async ({
     }));
   } catch (error) {
     console.error("Error fetching crypto data:", error);
-    throw error;
   }
 };

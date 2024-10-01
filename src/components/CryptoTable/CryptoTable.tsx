@@ -9,6 +9,8 @@ import { SortDirection, Params } from "../../interfaces/CryptoTableInterfaces";
 import SortableHeader from "../SortableHeader/SortableHeader";
 import CryptoRow from "../CryptoRow/CryptoRow";
 import { ActionType } from "../../interfaces/UIState";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 const CryptoTable: React.FC = () => {
   const itemsToShow = useStore((state) => state.itemsToShow);
@@ -22,7 +24,7 @@ const CryptoTable: React.FC = () => {
     direction: (searchParams.get("sortDirection") as SortDirection) || undefined,
   });
 
-  const { data, error, isLoading } = useQuery<CryptoAsset[]>({
+  const { data, error, isLoading, refetch } = useQuery<CryptoAsset[]>({
     queryKey: ["cryptoAssets"],
     queryFn: () => getCryptoAssets({ 
       vs_currency: "usd", 
@@ -68,8 +70,8 @@ const CryptoTable: React.FC = () => {
     setActionType(id, e.target.value as ActionType);
   };
 
-  if (isLoading) return <div>Loading data...</div>;
-  if (error) return <div>Error loading data: {`${error}`}</div>;
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage onRetry={refetch} />; 
 
   return (
     <div className={styles.tableContainer}>
