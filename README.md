@@ -50,8 +50,7 @@ Make sure you have the following installed on your machine:
   ### Deploying to GitHub Pages
   
     To deploy the project on GitHub Pages, run:
-    
-    ```bash
+
     npm run deploy
     
     This command uses Vite's production build and deploys the dist/ folder to the gh-pages branch for hosting on GitHub Pages.
